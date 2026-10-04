@@ -178,7 +178,7 @@
       width: 0%;
       background-color: #ff6600;
       border-radius: 2px;
-      transition: width 1s ease-in-out 0.2s;
+      transition: width 0.8s ease-in-out;
     }
 
     .text-box.visible::after {
@@ -395,8 +395,9 @@
           onUpdate: ({ progress }) => {
             hint.classList.toggle('show', progress <= 0.03);
             dragonImg.classList.toggle('active', progress > 0.03);
+            
             skillBoxes.forEach((box, index) => {
-              box.classList.toggle('visible', progress > 0.38 + index * 0.12);
+              box.classList.toggle('visible', progress > (0.1 + index * 0.15));
             });
           }
         }
@@ -404,7 +405,7 @@
 
       scrollTimeline.to(colorBar, {
         '--fire-progress': '100%',
-        duration: 0.35,
+        duration: 1,
         ease: 'none'
       }, 0);
 
@@ -413,8 +414,8 @@
         y: 0,
         scale: 1,
         color: 'blue',
-        stagger: 0.012,
-        duration: 0.2,
+        stagger: 0.03,
+        duration: 0.4,
         ease: 'power2.out'
       }, 0.03);
 
@@ -426,10 +427,10 @@
         opacity: 1,
         y: 0,
         scale: 1,
-        duration: 0.1,
-        stagger: 0.12,
+        duration: 0.25,
+        stagger: 0.15,
         ease: 'power2.out'
-      }, 0.38);
+      }, 0.1);
     });
   </script>
 </body>
