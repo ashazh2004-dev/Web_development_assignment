@@ -84,13 +84,25 @@
       top: 50%;
       transform: translateY(-50%);
       height: 119px;
-      z-index: 3;
+      z-index: 4;
       filter: drop-shadow(0 0 5px rgba(255, 102, 0, 0.5));
       transition: filter 0.3s ease;
     }
 
     .dragon-img.active {
       filter: drop-shadow(0 0 20px rgba(255, 102, 0, 0.9));
+    }
+
+    .moving-fire-img {
+      position: absolute;
+      left: var(--fire-progress, 0%);
+      top: 50%;
+      transform: translate(-100%, -50%);
+      height: 119px;
+      z-index: 3;
+      pointer-events: none;
+      filter: drop-shadow(0 0 10px rgba(255, 102, 0, 0.7));
+      will-change: left;
     }
 
     .color-bar h1 {
@@ -244,6 +256,7 @@
       transform: translateX(-50%);
       animation: wheel 1.4s ease-in-out infinite;
     }
+
     .skill-image {
       width: calc(100px + 2cm);
       height: calc(100px + 2cm);
@@ -258,11 +271,8 @@
     }
 
     @media (max-width: 768px) {
-      .dragon-img {
-        display: block;
-        margin-left: 0;
-        height: 119px;
-        align-content: left;
+      .dragon-img, .moving-fire-img {
+        height: 80px;
       }
       .color-bar h1 {
         font-size: 1.5rem;
@@ -296,7 +306,7 @@
 </head>
 <body>
 
-    <section class="hero w-full" id="heroTrack">
+  <section class="hero w-full" id="heroTrack">
     <div class="track d-flex flex-column">
 
       <div class="skills-container top-skills">
@@ -319,6 +329,7 @@
       <div class="content">
         <div class="color-bar" id="colorBar">
           <img src="https://raw.githubusercontent.com/ashazh2004-dev/Web_development_assignment/main/image-1.png" alt="Dragon" class="dragon-img img-fluid" id="dragonImg">
+          <img src="https://raw.githubusercontent.com/ashazh2004-dev/Web_development_assignment/main/image_20261004_143758.jpg" alt="Fire" class="moving-fire-img img-fluid" id="movingFireImg">
           <h1 id="mainTitle" aria-label="WELCOME ITZFIZZ">WELCOME ITZFIZZ</h1>
         </div>
       </div>
@@ -396,6 +407,7 @@
         duration: 0.35,
         ease: 'none'
       }, 0);
+
       scrollTimeline.to(letterSpans, {
         opacity: 1,
         y: 0,
@@ -405,6 +417,7 @@
         duration: 0.2,
         ease: 'power2.out'
       }, 0.03);
+
       scrollTimeline.fromTo(skillItems, {
         opacity: 0,
         y: 40,
