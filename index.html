@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WELCOME ITZFIZZ</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.production.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #0b0f19;
+      color: #ffffff;
+      overflow-x: hidden;
+    }
+
+    .hero {
+      height: 400vh;
+      position: relative;
+    }
+
+    .track {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background-color: #0b0f19;
+    }
+
+    .content {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 2;
+      margin: 30px 0;
+    }
+
+    .color-bar {
+      position: relative;
+      width: 100%;
+      padding: 22px 0;
+      background-color: #1e293b;
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .color-bar::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: var(--fire-progress, 0%);
+      background: linear-gradient(90deg, #ff1a00, #ff6600, #ffae00);
+      box-shadow: 0 0 35px rgba(255, 102, 0, 0.8);
+      z-index: 1;
+      transition: width 0.1s linear;
+    }
+
+    .dragon-img {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 119px;
+      z-index: 3;
+      filter: drop-shadow(0 0 5px rgba(255, 102, 0, 0.5));
+      transition: filter 0.3s ease;
+    }
+
+    .dragon-img.active {
+      filter: drop-shadow(0 0 20px rgba(255, 102, 0, 0.9));
+    }
+
+    .color-bar h1 {
+      position: relative;
+      z-index: 2;
+      font-size: 3.5rem;
+      letter-spacing: 0.5rem;
+      color: #ffffff;
+      font-weight: 800;
+      text-transform: uppercase;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .color-bar h1 span {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(20px) scale(0.6);
+      white-space: pre;
+    }
+
+    .color-bar h1 span.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      color: #0b0f19;
+    }
+
+    .skills-container {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      width: 100%;
+      max-width: 1100px;
+      padding: 0 20px;
+      z-index: 2;
+    }
+
+    .skill-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      opacity: 0;
+      transform: translateY(40px) scale(0.85);
+    }
+
+    .text-box {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 2px solid #00e5ff;
+      padding: 16px 24px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+      position: relative;
+      overflow: hidden;
+      min-width: 220px;
+    }
+
+    .text-box::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 4px;
+      width: 0%;
+      background-color: #ff6600;
+      border-radius: 2px;
+      transition: width 1s ease-in-out 0.2s;
+    }
+
+    .text-box.visible::after {
+      width: var(--percent);
+    }
+
+    .skill-name {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #ffffff;
+      letter-spacing: 1px;
+      line-height: 1.3;
+    }
+
+    .num-box {
+      font-size: 1rem;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+      padding: 4px 10px;
+      border-radius: 6px;
+      margin-left: auto;
+    }
+
+    #python { border-color: #00e5ff; }
+    #python::after { background-color: #00e5ff; }
+
+    #java { border-color: red; }
+    #java::after { background-color: red; }
+
+    #cpp { border-color: #00ff87; }
+    #cpp::after { background-color: #00ff87; }
+
+    #php { border-color: #ffea00; }
+    #php::after { background-color: #ffea00; }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 36px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: rgba(255,255,255,0.55);
+      font-size: 0.8rem;
+      letter-spacing: 3px;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+      z-index: 10;
+    }
+
+    .scroll-hint.show {
+      opacity: 1;
+    }
+
+    .scroll-hint .mouse {
+      width: 22px;
+      height: 34px;
+      border: 2px solid rgba(255,255,255,0.4);
+      border-radius: 20px;
+      position: relative;
+    }
+
+    .scroll-hint .mouse::before {
+      content: '';
+      position: absolute;
+      top: 6px;
+      left: 50%;
+      width: 4px;
+      height: 7px;
+      background: #ff6600;
+      border-radius: 4px;
+      transform: translateX(-50%);
+      animation: wheel 1.4s ease-in-out infinite;
+    }
+    .skill-image {
+      width: calc(100px + 2cm);
+      height: calc(100px + 2cm);
+      object-fit: cover;
+      border-radius: 10px;
+      flex: 0 0 auto;
+    }
+
+    @keyframes wheel {
+      0%   { top: 6px; opacity: 1; }
+      100% { top: 18px; opacity: 0; }
+    }
+
+    @media (max-width: 768px) {
+      .dragon-img {
+        display: block;
+        margin-left: 0;
+        height: 119px;
+        align-content: left;
+      }
+      .color-bar h1 {
+        font-size: 1.5rem;
+        letter-spacing: 0.15rem;
+      }
+      .skills-container {
+        flex-direction: column;
+      }
+      .skill-item {
+        width: 100%;
+        max-width: 520px;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .skill-image {
+        width: calc(76px + 2cm);
+        height: calc(76px + 2cm);
+      }
+      .text-box {
+        width: auto;
+        min-width: 0;
+        flex: 1 1 152px;
+        padding: 12px 14px;
+        gap: 8px;
+      }
+      .skill-name {
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+    <section class="hero w-full" id="heroTrack">
+    <div class="track d-flex flex-column">
+
+      <div class="skills-container top-skills">
+        <div class="skill-item">
+          <img src="./assets/Copilot_20261003_180932-.jpg" alt="Python Icon" class="skill-image img-fluid">
+          <div class="text-box" id="python" style="--percent: 90%;">
+            <span class="skill-name">Python<br>Data Science</span>
+            <span class="num-box">90%</span>
+          </div>
+        </div>
+        <div class="skill-item">
+          <img src="./assets/image.png" alt="Java Icon" class="skill-image img-fluid">
+          <div class="text-box" id="java" style="--percent: 85%;">
+            <span class="skill-name">Java<br>Software Engineering</span>
+            <span class="num-box">85%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="color-bar" id="colorBar">
+          <img src="./assets/image (1).png" alt="Dragon" class="dragon-img img-fluid" id="dragonImg">
+          <h1 id="mainTitle" aria-label="WELCOME ITZFIZZ">WELCOME ITZFIZZ</h1>
+        </div>
+      </div>
+
+      <div class="skills-container bottom-skills">
+        <div class="skill-item">
+          <img src="./assets/image_20261003_222333.jpg" alt="C++ Icon" class="skill-image img-fluid">
+          <div class="text-box" id="cpp" style="--percent: 75%;">
+            <span class="skill-name">C++<br>Games Development</span>
+            <span class="num-box">75%</span>
+          </div>
+        </div>
+        <div class="skill-item">
+          <img src="./assets/generated-image.jpg" alt="PHP Icon" class="skill-image img-fluid">
+          <div class="text-box" id="php" style="--percent: 60%;">
+            <span class="skill-name">PHP<br>Web Development</span>
+            <span class="num-box">60%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="scroll-hint show" id="scrollHint">
+        <div class="mouse"></div>
+        SCROLL
+      </div>
+
+    </div>
+  </section>
+
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const heroTrack = document.getElementById('heroTrack');
+      const mainTitle = document.getElementById('mainTitle');
+      const colorBar = document.getElementById('colorBar');
+      const dragonImg = document.getElementById('dragonImg');
+      const hint = document.getElementById('scrollHint');
+      const skillBoxes = Array.from(document.querySelectorAll('.text-box'));
+      const skillItems = Array.from(document.querySelectorAll('.skill-item'));
+      const titleText = mainTitle.getAttribute('aria-label');
+      const titleRoot = ReactDOM.createRoot(mainTitle);
+
+      ReactDOM.flushSync(() => {
+        titleRoot.render(React.createElement(
+          React.Fragment,
+          null,
+          ...Array.from(titleText, (character, index) => React.createElement(
+            'span',
+            { key: index, 'aria-hidden': 'true' },
+            character === ' ' ? '\u00A0' : character
+          ))
+        ));
+      });
+
+      const letterSpans = mainTitle.querySelectorAll('span');
+      gsap.registerPlugin(ScrollTrigger);
+
+      const scrollTimeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: heroTrack,
+          start: 'top top',
+          end: 'bottom bottom',
+          scrub: 0.25,
+          onUpdate: ({ progress }) => {
+            hint.classList.toggle('show', progress <= 0.03);
+            dragonImg.classList.toggle('active', progress > 0.03);
+            skillBoxes.forEach((box, index) => {
+              box.classList.toggle('visible', progress > 0.38 + index * 0.12);
+            });
+          }
+        }
+      });
+
+      scrollTimeline.to(colorBar, {
+        '--fire-progress': '100%',
+        duration: 0.35,
+        ease: 'none'
+      }, 0);
+      scrollTimeline.to(letterSpans, {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        color: 'blue',
+        stagger: 0.012,
+        duration: 0.2,
+        ease: 'power2.out'
+      }, 0.03);
+      scrollTimeline.fromTo(skillItems, {
+        opacity: 0,
+        y: 40,
+        scale: 0.85
+      }, {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 0.1,
+        stagger: 0.12,
+        ease: 'power2.out'
+      }, 0.38);
+    });
+  </script>
+</body>
+</html>
